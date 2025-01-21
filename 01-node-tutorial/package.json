@@ -1,10 +1,11 @@
 {
   "name": "tutorial",
   "version": "1.0.0",
-  "description": "",
-  "main": "1-intro.js",
+  "main": "answers/prompter.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon prompter.js",
+    "start": "node prompter.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +14,7 @@
     "lodash": "^4.17.20"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
-  }
+    "nodemon": "^2.0.22"
+  },
+  "description": ""
 }
