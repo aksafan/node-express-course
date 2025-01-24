@@ -1,0 +1,22 @@
+1. In this lesson, you created a middleware function called asyncWrapper. Why?
+
+To not repeat yourself (DRY) writing the same code over and over.
+Also, to support S and O from SOLID. This way our controller actions will do the only one job and
+in the future we can extend the logic without modifying it, and keep all in one place.
+
+2. Suppose that you want to make sure that both a status code and an error message are sent back to the user when they request the URL for a task that does not exist.
+Assume that you’ve created a CustomAPIError class and an error handler that references that class. Complete the code:
+
+```js
+const {createCustomError} =  require('./../errors/custom-error');
+
+const getTask = asyncWrapper(async (req, res, next) => {
+    const { id: taskID } = req.params;
+    const task = await Task.findOne({ _id: taskID });
+    if (!task) {
+        return next(createCustomError('Task doesn\'t exist', 404));
+    }
+
+    res.status(200).json({ task });
+});
+```
