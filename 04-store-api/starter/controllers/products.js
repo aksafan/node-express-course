@@ -27,34 +27,38 @@ const getAllProducts = async (req, res) => {
     }
 
     if (numericFilters) {
-        const operatorMap = {
-            '>': '$gt',
-            '>=': '$gte',
-            '=': '$eq',
-            '<': '$lt',
-            '<=': '$lte',
-        };
-        const regEx = /\b(<|>|>=|=|<=)\b/g;
-        let filters = numericFilters.replace(
-            regEx,
-            (match) => `-${operatorMap[match]}-`
-        );
-        const options = ['price', 'rating'];
-        filters = filters.split(',').forEach((item) => {
-            const [field, operator, value] = item.split('-');
-            if (options.includes(field)) {
-                queryObject[field] = {[operator]: Number(value)};
-            }
-        })
+        try {
+            const operatorMap = {
+                '>': '$gt',
+                '>=': '$gte',
+                '=': '$eq',
+                '<': '$lt',
+                '<=': '$lte',
+            };
+            const regEx = /\b(<|>|>=|=|<=)\b/g;
+            let filters = numericFilters.replace(
+                regEx,
+                (match) => `-${operatorMap[match]}-`
+            );
+            const options = ['price', 'rating'];
+            filters.split(',').forEach((item) => {
+                const [field, operator, value] = item.split('-');
+                if (options.includes(field) && !isNaN(value)) {
+                    queryObject[field] = { [operator]: Number(value) };
+                }
+            });
+        } catch (error) {
+            return res.status(400).json({ msg: 'Invalid numeric filter format' });
+        }
     }
 
-    let result = Product.find(queryObject);
+    let result = Product.find(queryObject).lean();
 
     if (sort) {
         const sortList = sort.split(',').join(' ');
         result = result.sort(sortList);
     } else {
-        result = result.sort('createAt');
+        result = result.sort('createdAt');
     }
 
     if (fields) {

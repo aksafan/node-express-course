@@ -11,10 +11,11 @@ const start = async () => {
         await connectDB(process.env.MONGO_DB_CONNECTING_STRING);
         await Product.deleteMany();
         await Product.create(jsonProducts);
-        console.log('Success!!!!');
+        console.log('Database Seeded Successfully');
         process.exit(0);
     } catch (e) {
-        console.log(e);
+        console.error('Error seeding database:', e.message);
+        console.error(e.stack);
         process.exit(1);
     }
 }
