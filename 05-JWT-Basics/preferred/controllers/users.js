@@ -8,7 +8,7 @@ const hello = async (req, res) => {
 const logon = async (req, res) => {
     const {username, password} = req.body;
     if (!username || !password) {
-        res.status(401).json({message: 'No valid username or password'});
+        return res.status(401).json({ message: 'No valid username or password' });
     }
     const token = jwt.sign(
         {data: username},

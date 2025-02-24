@@ -19,7 +19,7 @@ loginForm.addEventListener('submit', async (e) => {
 
         if (res.ok) {
             token = data.token;
-            localStorage.setItem('token', token);
+            sessionStorage.setItem('token', token);
             responseElement.textContent = `Login successful! Token: ${token}`;
         } else {
             responseElement.textContent = `Error: ${data.message}`;
@@ -33,7 +33,7 @@ helloButton.addEventListener('click', async () => {
     try {
         const res = await fetch('/api/v1/hello', {
             method: 'GET',
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` },
         });
         const data = await res.json();
 

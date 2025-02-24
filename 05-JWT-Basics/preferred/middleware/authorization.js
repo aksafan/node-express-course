@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 
 const authorizationMiddleware = async (req, res, next) => {
   const bearer = req.headers.authorization;
-  if (!bearer.startsWith('Bearer ')) {
-    return res.status(401).json({'message': 'unauthorized'});
+  if (!bearer || !bearer.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 
   const token = bearer.split(' ')[1];
